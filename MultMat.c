@@ -17,6 +17,10 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 	
 	while(o<alto1){
 		m=0;
+		#pragma omp parallel private(pos, tid) 
+  		{ 
+  			
+  		//calcualar el tamaño de las filas con el numero de el hilo y el O "pos = pos + IDhilo*Nhilos"
 		while(m<ancho2){
 			i = cont;
 			j=m;
@@ -34,6 +38,7 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 			m=m+1;
 		}
 		cont = cont+ancho1;
+  		} 
 		o=o+1;
 	}
 	
