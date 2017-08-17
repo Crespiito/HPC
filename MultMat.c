@@ -7,40 +7,43 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 	
 	matriz =(float*)malloc((alto1*ancho2)*sizeof(float));
 	
-	int i,j,o,m,n,cont,pos;
+	int i,j,o,m,n,cont,pos,IDhilo,Nhilos,PosMAx;
 	
 	float valor;
-	
+	PosMAx = alto1*ancho2;
 	pos = 0;
 	o= 0;
 	cont =0;
 	
-	while(o<alto1){
+#pragma omp parallel private(pos,cont) shared(o) 
+  	{ 
+  	for (0; o<alto1; ++o){
 		m=0;
-		#pragma omp parallel private(pos, tid) 
-  		{ 
-  			
-  		//calcualar el tamaño de las filas con el numero de el hilo y el O "pos = pos + IDhilo*Nhilos"
-		while(m<ancho2){
-			i = cont;
-			j=m;
-			valor=0;
-			n=0;
-			while(n<alto2){
-				valor=valor + mat1[i]*mat2[j];
-				i= i+1;
-				j=j+ancho2;
-				n=n+1;
-			}
+		IDhilo = omp_get_thread_num();
+		Nhilos = omp_get_num_threads();
+		pos = pos + IDhilo*ancho1;
+		cont = o*ancho1;
+			while(m<ancho2){
+				i = cont;
+				j=m;
+				valor=0;
+				n=0;
+				while(n<alto2){
+					valor=valor + mat1[i]*mat2[j];
+					printf("%d %d %d \n", i,Nhilos, pos);
+					i= i+1;
+					j=j+ancho2;
+					n=n+1;
+				}
 			
-			matriz[pos]=valor;
-			pos= pos+1;
-			m=m+1;
-		}
-		cont = cont+ancho1;
-  		} 
-		o=o+1;
-	}
+				matriz[pos]=valor;
+				pos= pos+1;
+				m=m+1;
+				}
+  			}
+  		
+	} 	
+
 	
 	return matriz;
 	 
