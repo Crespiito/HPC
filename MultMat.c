@@ -26,11 +26,12 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 			while(m<ancho2){
 				i = cont;
 				j=m;
+				printf("%d %d %d \n",m,Nhilos, cont);
 				valor=0;
 				n=0;
 				while(n<alto2){
 					valor=valor + mat1[i]*mat2[j];
-					printf("%d %d %d \n", i,Nhilos, pos);
+
 					i= i+1;
 					j=j+ancho2;
 					n=n+1;
@@ -43,7 +44,10 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
   			}
   		
 	} 	
-
+	for (i = 0; i < PosMAx; ++i)
+	{
+		printf("%f\n",matriz[i]);
+	}
 	
 	return matriz;
 	 
@@ -133,15 +137,12 @@ int main(int argc , char *argv[] ){
 
 	i=0;
 
-	while(i<a1valor1){
+	while(i<tm){
 
-		n=0;
-		while(n<a2valor2){
-			fprintf(archivof , "%f," , matrizf[n]);
-			n=n+1;
+		if(i%a2valor2 == 0){
+			fprintf(archivof , "\n");
 		}
-
-		fprintf(archivof, "\n");
+		fprintf(archivof , "%f," , matrizf[i]);
 		i=i+1;
 	}
 
