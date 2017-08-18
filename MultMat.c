@@ -13,45 +13,38 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 	float valor;
 	PosMAx = alto1*ancho2;
 	pos = 0;
-	o= 0;
 	cont =0;
-	
-#pragma omp parallel private(pos,cont,o)
+	printf("pos max %d\n",PosMAx);
+#pragma omp parallel private(IDhilo,Nhilos,cont)
   	{ 
 	IDhilo = omp_get_thread_num();
 	Nhilos = omp_get_num_threads();
   	cont = 0;
-  	o=IDhilo;
-	pos = IDhilo*ancho1;
+  	#pragma omp for schedule(static)
+  	for (int o=0; o<alto1; o++){
+  		printf("construccion de fila %d en manos de  hilo %d \n", o,IDhilo );
+  		pos = o*ancho1;
+  		m=0;		
+		cont = o*ancho1;
+		while(m<ancho2){
+			printf("%d \n",m );
+			i = cont;
+			j=m;
+			valor=0;
+			n=0;
+			while(n<alto2){
+				valor=valor + mat1[i]*mat2[j];
+				i= i+1;
+				j=j+ancho2;
+				n=n+1;
+			}
 
-  	for (o; o<alto1; o=o+Nhilos){
-  		m=0;
-		
-		if (pos < PosMAx){
-			
-			cont = o*ancho1;
-			while(m<ancho2){
-				i = cont;
-				j=m;
-				valor=0;
-				n=0;
-				while(n<alto2){
-					valor=valor + mat1[i]*mat2[j];
-					i= i+1;
-					j=j+ancho2;
-					n=n+1;
-				}
-				matriz[pos]=valor; 
-				m=m+1;
-				if (m<ancho2){
-					pos= pos+1;	
-					}
-				}
-  			}
-  		pos = pos + (Nhilos-1)*ancho1+1;
+			matriz[pos]=valor; 
+			m=m+1;
+			pos= pos+1;	
+			}
   		}
 
-  	printf("Hilo terminado %d\n", IDhilo );
   		
 	} 		 
 	return matriz;
