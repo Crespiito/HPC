@@ -1,0 +1,9 @@
+-una lista compartida en los dos hilos y cuidarla no me acierdo apra que xD 
+-un hilo de ejecucion principal
+-u hilo donde se ejecuta la musica dentro de la lista 
+
+
+Prioridades : 
+-menu de interacciones 
+-creacion de la lista
+-reproduccion de las listas 

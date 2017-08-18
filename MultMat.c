@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 
 float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , int ancho2){
@@ -15,42 +16,45 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 	o= 0;
 	cont =0;
 	
-#pragma omp parallel private(pos,cont) shared(o) 
+#pragma omp parallel private(pos,cont,o)
   	{ 
-  	for (0; o<alto1; ++o){
-		m=0;
-		IDhilo = omp_get_thread_num();
-		Nhilos = omp_get_num_threads();
-		pos = pos + IDhilo*ancho1;
-		cont = o*ancho1;
+	IDhilo = omp_get_thread_num();
+	Nhilos = omp_get_num_threads();
+  	cont = 0;
+  	o=IDhilo;
+	pos = IDhilo*ancho1;
+
+  	for (o; o<alto1; o=o+Nhilos){
+  		m=0;
+		
+		if (pos < PosMAx){
+			
+			cont = o*ancho1;
 			while(m<ancho2){
 				i = cont;
 				j=m;
-				printf("%d %d %d \n",m,Nhilos, cont);
 				valor=0;
 				n=0;
 				while(n<alto2){
 					valor=valor + mat1[i]*mat2[j];
-
 					i= i+1;
 					j=j+ancho2;
 					n=n+1;
 				}
-			
-				matriz[pos]=valor;
-				pos= pos+1;
+				matriz[pos]=valor; 
 				m=m+1;
+				if (m<ancho2){
+					pos= pos+1;	
+					}
 				}
   			}
+  		pos = pos + (Nhilos-1)*ancho1+1;
+  		}
+
+  	printf("Hilo terminado %d\n", IDhilo );
   		
-	} 	
-	for (i = 0; i < PosMAx; ++i)
-	{
-		printf("%f\n",matriz[i]);
-	}
-	
+	} 		 
 	return matriz;
-	 
 }
 
 int main(int argc , char *argv[] ){
@@ -142,7 +146,7 @@ int main(int argc , char *argv[] ){
 		if(i%a2valor2 == 0){
 			fprintf(archivof , "\n");
 		}
-		fprintf(archivof , "%f," , matrizf[i]);
+		fprintf(archivof , "%.0f," , matrizf[i]);
 		i=i+1;
 	}
 
