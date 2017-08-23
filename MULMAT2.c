@@ -12,40 +12,25 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 
 	float valor;
 	PosMAx = alto1*ancho2;
-	pos = 0;
-	cont =0;
-	printf("pos max %d\n",PosMAx);  	
-  	cont = 0;
-		printf("murio\n" );
-  	#pragma omp parallel private (pos)
-	#pragma omp for schedule(static)
+  	#pragma omp parallel private (pos,cont,IDhilo,Nhilos,m,n,i,j,valor)
+	  #pragma omp for schedule(static)
   	for (int o=0; o<alto1; o++){
-  		IDhilo = omp_get_thread_num();
-		Nhilos = omp_get_num_threads();
-  	  	pos = o*ancho1;
-  	  	if(IDhilo == 0){
-  				if (o==0){	
-    				printf(" columna = %d  o = %d pos =: [%d] = %.0f \n ",m,o,pos, valor);
-  				}	
-  			}
-  	  	m=0;
-				while(m<ancho2){
-						i = cont;
-						j=m;
-						valor=0;
-						n=0;
-						while(n<alto2){
-								valor=valor + mat1[i]*mat2[j];
+  		  IDhilo = omp_get_thread_num();
+		    Nhilos = omp_get_num_threads();
+        pos = o*ancho1;
+        cont = pos;
+        m=0;
+        while(m<ancho2){
+            i = cont;
+            j=m;
+            valor=0;
+            n=0;
+            while(n<alto2){
+                valor=valor + mat1[i]*mat2[j];
 								i= i+1;
 								j=j+ancho2;
 								n=n+1;
 								}
-
-  			if(IDhilo == 1){
-  				if (o==0){	
-    				printf(" columna = %d  o = %d pos =: [%d] = %.0f \n ",m,o,pos, valor);
-  				}	
-  			}
 				matriz[pos]=valor;
 				m=m+1;
 				pos= pos+1;

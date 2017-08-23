@@ -34,7 +34,7 @@ pos= pos+1;
 m=m+1;
 }
 cont = cont+ancho1;
- 
+
 o=o+1;
 }
 
@@ -72,7 +72,7 @@ int main(int argc , char *argv[] ){
 
    int n;
    n=0;
-
+ 
    while(n<tamanom1){
      float numero;
      fscanf (archivo1, "%f,", &numero);
@@ -100,7 +100,7 @@ int main(int argc , char *argv[] ){
    n=0;
 
    while(n<tamanom2){
- 
+
      float numero;
      fscanf (archivo2, "%f,", &numero);
      matriz2[n] = numero;
