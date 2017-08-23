@@ -13,8 +13,9 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 	float valor;
 	PosMAx = alto1*ancho2;
   	#pragma omp parallel private (pos,cont,IDhilo,Nhilos,m,n,i,j,valor)
+		{
 	  #pragma omp for schedule(static)
-  	for (int o=0; o<alto1; o++){
+		for (o=0; o<alto1; o++){
   		  IDhilo = omp_get_thread_num();
 		    Nhilos = omp_get_num_threads();
         pos = o*ancho1;
@@ -36,6 +37,7 @@ float *MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , in
 				pos= pos+1;
 			}
   	}
+	}
 
 	return matriz;
 }
