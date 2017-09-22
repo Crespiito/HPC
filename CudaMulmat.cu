@@ -96,6 +96,7 @@ int main(int argc , char *argv[] ){
 
     //se crea la matriz plana!! (chan chan chaaaaan)
 
+
     h_matriz2 = (float*)malloc(tamanom2*sizeof(float));
 
     // se llena la matriz plana
@@ -122,6 +123,7 @@ int main(int argc , char *argv[] ){
     cudaMalloc(&d_matriz1, SizeMat1);
     cudaMalloc(&d_matriz2, SizeMat2);
     cudaMalloc(&d_matrizf, SizeMat3);
+    h_matrizf = (float*)malloc(tamanom3*sizeof(float));
 
   //copia de vectores al device 
 
