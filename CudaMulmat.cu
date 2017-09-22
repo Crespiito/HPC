@@ -160,8 +160,8 @@ int main(int argc , char *argv[] ){
  
   //se libera memoria en el host 
 
-	free(matriz1);
-  free(matriz2);
+	free(h_matriz1);
+  free(h_matriz2);
 
   //se libera memoria en el device 
 
