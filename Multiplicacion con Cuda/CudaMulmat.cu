@@ -136,7 +136,7 @@ int main(int argc , char *argv[] ){
 
     //Numero de hilos por bloque 
     
-    blocksize = 32; // 32*32 = 1024 donde  1024 es la cantidad de hilos por bloque! 
+    blockSize = 32; // 32*32 = 1024 donde  1024 es la cantidad de hilos por bloque! 
 
     //Numero de bloques en X y Y 
 
