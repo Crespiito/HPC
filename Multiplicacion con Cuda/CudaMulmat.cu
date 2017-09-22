@@ -5,7 +5,7 @@
 
 __global__ void MulMat(float* mat1 , int alto1, int ancho1 , float* mat2 , int alto2 , int ancho2 , float* matriz){
 	
-	int i,j,m,n,pos;
+	int i,j,n,pos;
   float valor;
 
   //Calculo de la posicion en X y Y  
@@ -96,6 +96,7 @@ int main(int argc , char *argv[] ){
 
     //se crea la matriz plana!! (chan chan chaaaaan)
 
+
     h_matriz2 = (float*)malloc(tamanom2*sizeof(float));
 
     // se llena la matriz plana
@@ -121,7 +122,8 @@ int main(int argc , char *argv[] ){
 
     cudaMalloc(&d_matriz1, SizeMat1);
     cudaMalloc(&d_matriz2, SizeMat2);
-    cudaMalloc(&d_matriz3, SizeMat3);
+    cudaMalloc(&d_matrizf, SizeMat3);
+    h_matrizf = (float*)malloc(tamanom3*sizeof(float));
 
   //copia de vectores al device 
 
@@ -130,7 +132,7 @@ int main(int argc , char *argv[] ){
 
   //calculo de la cantidad del tamaño del grid si cada bloque tiene 1024 hilos en X y Y 
 
-    int blocksize , gridsizeX , gridsizeY ;
+    int blockSize , gridSizeX , gridSizeY ;
 
     //Numero de hilos por bloque 
     
@@ -143,8 +145,8 @@ int main(int argc , char *argv[] ){
 
     //creacion de las dimenciones para el kernel 
 
-    dim3 dimBlock(blocksize,blocksize,1);
-    dim3 dimGrid(gridsizeX,gridsizeY,1);
+    dim3 dimBlock(blockSize,blockSize,1);
+    dim3 dimGrid(gridSizeX,gridSizeY,1);
 
     //Cambiar por copia de matris final en dispositivo   
     MulMat<<<dimGrid,dimBlock>>>(d_matriz1,a1valor1,a1valor2,d_matriz2,a2valor1,a2valor2,d_matrizf);
@@ -160,8 +162,8 @@ int main(int argc , char *argv[] ){
  
   //se libera memoria en el host 
 
-	free(matriz1);
-  free(matriz2);
+	free(h_matriz1);
+  free(h_matriz2);
 
   //se libera memoria en el device 
 
@@ -193,7 +195,7 @@ int main(int argc , char *argv[] ){
 	}
 
   //se termina de liberar memoria
-  
+
   free(h_matrizf);
 
   }
